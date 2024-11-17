@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Location Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #location {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Find Your Location</h1>
+  <button id="getLocationBtn">Get My Location</button>
+  <div id="location"></div>
+
+  <script>
+    const button = document.getElementById('getLocationBtn');
+    const locationDiv = document.getElementById('location');
+
+    button.addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            locationDiv.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+          },
+          (error) => {
+            locationDiv.textContent = `Error: ${error.message}`;
+          }
+        );
+      } else {
+        locationDiv.textContent = "Geolocation is not supported by your browser.";
+      }
+    });
+  </script>
+</body>
+</html>
